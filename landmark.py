@@ -1,8 +1,6 @@
 
 # # Convolutional Neural Networks
 
-
-# In[1]:
 import os
 import numpy as np
 import torch
@@ -53,17 +51,13 @@ loaders_scratch = {'train':train_loader ,'valid': valid_loader, 'test':test_load
 classes = [classes_name.split(".")[1] for classes_name in train_data.classes]
 #print(classes[49])     
 
-#----------------------------------------------------------------------
-
-# In[2]:
+  #----------------------------------------------------------------------------------------------------------------------------------
 
 import matplotlib.pyplot as plt
 get_ipython().run_line_magic('matplotlib', 'inline')
 import random
 
-## TODO: visualize a batch of the train data loader
-## the class names can be accessed at the `classes` attribute
-## of your dataset object (e.g., `train_dataset.classes`)
+
          
 def imshow(img):
     img = img / 2 + 0.5  # unnormalize
@@ -80,21 +74,12 @@ for index in range(12):
     ax.set_title(class_name)
     
 
-
-# ### Initialize use_cuda variable
-
-# In[2]:
-
-
 # useful variable that tells us whether we should use the GPU
 use_cuda = torch.cuda.is_available()
 
+  #------------------------------------------------------------------------------------------------------------------------------------
 
 # ### (IMPLEMENTATION) Specify Loss Function and Optimizer
-# 
-# Use the next code cell to specify a [loss function](http://pytorch.org/docs/stable/nn.html#loss-functions) and [optimizer](http://pytorch.org/docs/stable/optim.html).  Save the chosen loss function as `criterion_scratch`, and fill in the function `get_optimizer_scratch` below.
-
-# In[3]:
 
 
 import torch.optim as optim
@@ -107,13 +92,11 @@ def get_optimizer_scratch(model):
     ## TODO: select and return an optimizer
     return optim.SGD(model.parameters(), lr=0.01)
     
-
+  #----------------------------------------------------------------------------------------------------------------------------------
 
 # ### (IMPLEMENTATION) Model Architecture
 # 
 # Create a CNN to classify images of landmarks.  Use the template in the code cell below.
-
-# In[4]:
 
 
 import torch.nn as nn
@@ -153,20 +136,9 @@ model_scratch = Net()
 if use_cuda:
     model_scratch.cuda()
 
+    #----------------------------------------------------------------------------------------------------------------------------------
 
-# __Question 2:__ Outline the steps you took to get to your final CNN architecture and your reasoning at each step.  
-
-# __Answer:__
-# I start by doing some research, and I found this helpful article https://towardsdatascience.com/a-guide-to-an-efficient-way-to-build-neural-network-architectures-part-ii-hyper-parameter-42efca01e5d7, it explains some general tips. 
-# In order to satisfy the task, I concentrated on designing a simple architecture as much as possible. I used 3 CNN with RELU activation function, and  Max pooling using a 2x2 kernel between them to focus on the main target features via dividing the image by a factor of 2.
-# In the fully connected layers, I used two linear layers and 0.3 dropouts to avoid overfitting.
-# 
-
-# ### (IMPLEMENTATION) Implement the Training Algorithm
-# 
-# Implement your training algorithm in the code cell below.  [Save the final model parameters](http://pytorch.org/docs/master/notes/serialization.html) at the filepath stored in the variable `save_path`.
-
-# In[3]:
+# taining algorithm
 
 
 def train(n_epochs, loaders, model, optimizer, criterion, use_cuda, save_path):
@@ -227,13 +199,13 @@ def train(n_epochs, loaders, model, optimizer, criterion, use_cuda, save_path):
     return model
 
 
+  #----------------------------------------------------------------------------------------------------------------------------------
+  
 # ### (IMPLEMENTATION) Experiment with the Weight Initialization
 # 
 # Use the code cell below to define a custom weight initialization, and then train with your weight initialization for a few epochs. Make sure that neither the training loss nor validation loss is `nan`.
 # 
 # Later on, you will be able to see how this compares to training with PyTorch's default weight initialization.
-
-# In[6]:
 
 
 def custom_weight_init(m):
@@ -254,12 +226,12 @@ model_scratch = train(20, loaders_scratch, model_scratch, get_optimizer_scratch(
                       criterion_scratch, use_cuda, 'ignore.pt')
 
 
+
+  #----------------------------------------------------------------------------------------------------------------------------------
+
 # ### (IMPLEMENTATION) Train and Validate the Model
 # 
 # Run the next code cell to train your model.
-
-# In[8]:
-
 
 ## TODO: you may change the number of epochs if you'd like,
 ## but changing it is not required
@@ -281,12 +253,11 @@ model_scratch = train(num_epochs, loaders_scratch, model_scratch, get_optimizer_
                       criterion_scratch, use_cuda, 'model_scratch.pt')
 
 
+  #----------------------------------------------------------------------------------------------------------------------------------
+  
 # ### (IMPLEMENTATION) Test the Model
 # 
 # Run the code cell below to try out your model on the test dataset of landmark images. Run the code cell below to calculate and print the test loss and accuracy.  Ensure that your test accuracy is greater than 20%.
-
-# In[12]:
-
 
 def test(loaders, model, criterion, use_cuda):
 
@@ -324,22 +295,12 @@ model_scratch.load_state_dict(torch.load('model_scratch.pt'))
 test(loaders_scratch, model_scratch, criterion_scratch, use_cuda)
 
 
-# ---
-# <a id='step2'></a>
+  #----------------------------------------------------------------------------------------------------------------------------------
+  
+
 # ## Step 2: Create a CNN to Classify Landmarks (using Transfer Learning)
-# 
-# You will now use transfer learning to create a CNN that can identify landmarks from images.  Your CNN must attain at least 60% accuracy on the test set.
-# 
-# ### (IMPLEMENTATION) Specify Data Loaders for the Landmark Dataset
-# 
-# Use the code cell below to create three separate [data loaders](http://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader): one for training data, one for validation data, and one for test data. Randomly split the images located at `landmark_images/train` to create the train and validation data loaders, and use the images located at `landmark_images/test` to create the test data loader.
-# 
-# All three of your data loaders should be accessible via a dictionary named `loaders_transfer`. Your train data loader should be at `loaders_transfer['train']`, your validation data loader should be at `loaders_transfer['valid']`, and your test data loader should be at `loaders_transfer['test']`.
-# 
-# If you like, **you are welcome to use the same data loaders from the previous step**, when you created a CNN from scratch.
 
-# In[7]:
-
+  #----------------------------------------------------------------------------------------------------------------------------------
 
 ### TODO: Write data loaders for training, validation, and test sets
 ## Specify appropriate transforms, and batch_sizes
@@ -385,12 +346,11 @@ loaders_transfer = {'train':train_loader ,'valid': valid_loader, 'test':test_loa
 classes = [classes_name.split(".")[1] for classes_name in train_data.classes]
 #print(classes[49])     
 
+  #----------------------------------------------------------------------------------------------------------------------------------
 
 # ### (IMPLEMENTATION) Specify Loss Function and Optimizer
 # 
 # Use the next code cell to specify a [loss function](http://pytorch.org/docs/stable/nn.html#loss-functions) and [optimizer](http://pytorch.org/docs/stable/optim.html).  Save the chosen loss function as `criterion_transfer`, and fill in the function `get_optimizer_transfer` below.
-
-# In[9]:
 
 
 ## TODO: select loss function
@@ -404,11 +364,11 @@ def get_optimizer_transfer(model):
     return optim.SGD(model.classifier.parameters(), lr=0.01)
 
 
+    #----------------------------------------------------------------------------------------------------------------------------------
+    
 # ### (IMPLEMENTATION) Model Architecture
 # 
 # Use transfer learning to create a CNN to classify images of landmarks.  Use the code cell below, and save your initialized model as the variable `model_transfer`.
-
-# In[4]:
 
 
 ## TODO: Specify model architecture
@@ -430,17 +390,7 @@ print(model_transfer)
 if use_cuda:
     model_transfer = model_transfer.cuda()
 
-
-# __Question 3:__ Outline the steps you took to get to your final CNN architecture and your reasoning at each step.  Describe why you think the architecture is suitable for the current problem.
-
-# __Answer:__  Since the VGG-16 model has been trained on millions of images, I used it as a pretrained model. We only need to replace the final fully connected layer of the model with our own problem to output 50 classes because we have a small dataset and similar data. Also, The parameters of all the feature layers of the model were also frozen.
-
-# ### (IMPLEMENTATION) Train and Validate the Model
-# 
-# Train and validate your model in the code cell below.  [Save the final model parameters](http://pytorch.org/docs/master/notes/serialization.html) at filepath `'model_transfer.pt'`.
-
-# In[5]:
-
+  #----------------------------------------------------------------------------------------------------------------------------------
 
 import signal
 
@@ -498,11 +448,10 @@ def keep_awake(iterable, delay=DELAY, interval=INTERVAL):
     with active_session(delay, interval): yield from iterable
 
 
-# In[10]:
-
+  #----------------------------------------------------------------------------------------------------------------------------------
 
 # TODO: train the model and save the best model parameters at filepath 'model_transfer.pt'
-num_epochs = 13
+num_epochs = 20
 
 with active_session():
 # train the model
@@ -516,35 +465,25 @@ with active_session():
     model_transfer.load_state_dict(torch.load('model_transfer.pt'))
 
 
+    #----------------------------------------------------------------------------------------------------------------------------------
+    
 # ### (IMPLEMENTATION) Test the Model
 # 
 # Try out your model on the test dataset of landmark images. Use the code cell below to calculate and print the test loss and accuracy.  Ensure that your test accuracy is greater than 60%.
 
-# In[13]:
-
 
 test(loaders_transfer, model_transfer, criterion_transfer, use_cuda)
 
-
-# ---
-# <a id='step3'></a>
+  #----------------------------------------------------------------------------------------------------------------------------------
+  
 # ## Step 3: Write Your Landmark Prediction Algorithm
+  #----------------------------------------------------------------------------------------------------------------------------------
 # 
 # Great job creating your CNN models! Now that you have put in all the hard work of creating accurate classifiers, let's define some functions to make it easy for others to use your classifiers.
 # 
 # ### (IMPLEMENTATION) Write Your Algorithm, Part 1
 # 
 # Implement the function `predict_landmarks`, which accepts a file path to an image and an integer k, and then predicts the **top k most likely landmarks**. You are **required** to use your transfer learned CNN from Step 2 to predict the landmarks.
-# 
-# An example of the expected behavior of `predict_landmarks`:
-# ```
-# >>> predicted_landmarks = predict_landmarks('example_image.jpg', 3)
-# >>> print(predicted_landmarks)
-# ['Golden Gate Bridge', 'Brooklyn Bridge', 'Sydney Harbour Bridge']
-# ```
-
-# In[14]:
-
 
 import cv2
 from PIL import Image
@@ -582,14 +521,11 @@ def predict_landmarks(img_path, k):
 print ( predict_landmarks('images/test/09.Golden_Gate_Bridge/190f3bae17c32c37.jpg', 5) )
 
 
+  #----------------------------------------------------------------------------------------------------------------------------------
+  
 # ### (IMPLEMENTATION) Write Your Algorithm, Part 2
 # 
 # In the code cell below, implement the function `suggest_locations`, which accepts a file path to an image as input, and then displays the image and the **top 3 most likely landmarks** as predicted by `predict_landmarks`.
-# 
-# Some sample output for `suggest_locations` is provided below, but feel free to design your own user experience!
-# ![](images/sample_landmark_output.png)
-
-# In[16]:
 
 
 import matplotlib.pyplot as plt
@@ -607,22 +543,12 @@ def suggest_locations(img_path):
     
 # test on a sample image
 suggest_locations('images/test/09.Golden_Gate_Bridge/190f3bae17c32c37.jpg')
-
+  #----------------------------------------------------------------------------------------------------------------------------------
+ 
 
 # ### (IMPLEMENTATION) Test Your Algorithm
 # 
 # Test your algorithm by running the `suggest_locations` function on at least four images on your computer. Feel free to use any images you like.
-# 
-# __Question 4:__ Is the output better than you expected :) ?  Or worse :( ?  Provide at least three possible points of improvement for your algorithm.
-
-# __Answer:__ (Three possible points for improvement)
-# In general, the outputs are better than what I expected.
-# Possible points for improvement:-
-# More related training data should be fed into the model.
-# Trying some changes in the model architecture, like adding more fully connected layers 
-# Trying other hyperparameter values
-
-# In[19]:
 
 
 ## TODO: Execute the `suggest_locations` function on
@@ -630,7 +556,6 @@ suggest_locations('images/test/09.Golden_Gate_Bridge/190f3bae17c32c37.jpg')
 ## Feel free to use as many code cells as needed.
 
 suggest_locations('myimages/pic1.jpg')
-
 
 suggest_locations('myimages/pic2.jpg')
 
