@@ -1,90 +1,8 @@
-#!/usr/bin/env python
-# coding: utf-8
 
 # # Convolutional Neural Networks
-# 
-# ## Project: Write an Algorithm for Landmark Classification
-# 
-# ---
-# 
-# In this notebook, some template code has already been provided for you, and you will need to implement additional functionality to successfully complete this project. You will not need to modify the included code beyond what is requested. Sections that begin with **'(IMPLEMENTATION)'** in the header indicate that the following block of code will require additional functionality which you must provide. Instructions will be provided for each section, and the specifics of the implementation are marked in the code block with a 'TODO' statement. Please be sure to read the instructions carefully! 
-# 
-# > **Note**: Once you have completed all the code implementations, you need to finalize your work by exporting the Jupyter Notebook as an HTML document. Before exporting the notebook to HTML, all the code cells need to have been run so that reviewers can see the final implementation and output. You can then export the notebook by using the menu above and navigating to **File -> Download as -> HTML (.html)**. Include the finished document along with this notebook as your submission.
-# 
-# In addition to implementing code, there will be questions that you must answer which relate to the project and your implementation. Each section where you will answer a question is preceded by a **'Question X'** header. Carefully read each question and provide thorough answers in the following text boxes that begin with **'Answer:'**. Your project submission will be evaluated based on your answers to each of the questions and the implementation you provide.
-# 
-# >**Note:** Code and Markdown cells can be executed using the **Shift + Enter** keyboard shortcut.  Markdown cells can be edited by double-clicking the cell to enter edit mode.
-# 
-# The rubric contains _optional_ "Stand Out Suggestions" for enhancing the project beyond the minimum requirements. If you decide to pursue the "Stand Out Suggestions", you should include the code in this Jupyter notebook.
-# 
-# ---
-# ### Why We're Here
-# 
-# Photo sharing and photo storage services like to have location data for each photo that is uploaded. With the location data, these services can build advanced features, such as automatic suggestion of relevant tags or automatic photo organization, which help provide a compelling user experience. Although a photo's location can often be obtained by looking at the photo's metadata, many photos uploaded to these services will not have location metadata available. This can happen when, for example, the camera capturing the picture does not have GPS or if a photo's metadata is scrubbed due to privacy concerns.
-# 
-# If no location metadata for an image is available, one way to infer the location is to detect and classify a discernable landmark in the image. Given the large number of landmarks across the world and the immense volume of images that are uploaded to photo sharing services, using human judgement to classify these landmarks would not be feasible.
-# 
-# In this notebook, you will take the first steps towards addressing this problem by building models to automatically predict the location of the image based on any landmarks depicted in the image. At the end of this project, your code will accept any user-supplied image as input and suggest the top k most relevant landmarks from 50 possible landmarks from across the world. The image below displays a potential sample output of your finished project.
-# 
-# ![Sample landmark classification output](images/sample_landmark_output.png)
-# 
-# 
-# ### The Road Ahead
-# 
-# We break the notebook into separate steps.  Feel free to use the links below to navigate the notebook.
-# 
-# * [Step 0](#step0): Download Datasets and Install Python Modules
-# * [Step 1](#step1): Create a CNN to Classify Landmarks (from Scratch)
-# * [Step 2](#step2): Create a CNN to Classify Landmarks (using Transfer Learning)
-# * [Step 3](#step3): Write Your Landmark Prediction Algorithm
-# 
-# ---
-# <a id='step0'></a>
-# ## Step 0: Download Datasets and Install Python Modules
-# 
-# **Note: if you are using the Udacity workspace, *YOU CAN SKIP THIS STEP*. The dataset can be found in the `/data` folder and all required Python modules have been installed in the workspace.**
-# 
-# Download the [landmark dataset](https://udacity-dlnfd.s3-us-west-1.amazonaws.com/datasets/landmark_images.zip).
-# Unzip the folder and place it in this project's home directory, at the location `/landmark_images`.
-# 
-# Install the following Python modules:
-# * cv2
-# * matplotlib
-# * numpy
-# * PIL
-# * torch
-# * torchvision
 
-# 
-# 
-# <a id='step1'></a>
-# ## Step 1: Create a CNN to Classify Landmarks (from Scratch)
-# 
-# In this step, you will create a CNN that classifies landmarks.  You must create your CNN _from scratch_ (so, you can't use transfer learning _yet_!), and you must attain a test accuracy of at least 20%.
-# 
-# Although 20% may seem low at first glance, it seems more reasonable after realizing how difficult of a problem this is. Many times, an image that is taken at a landmark captures a fairly mundane image of an animal or plant, like in the following picture.
-# 
-# <img src="images/train/00.Haleakala_National_Park/084c2aa50d0a9249.jpg" alt="Bird in Haleakalā National Park" style="width: 400px;"/>
-# 
-# Just by looking at that image alone, would you have been able to guess that it was taken at the Haleakalā National Park in Hawaii?
-# 
-# An accuracy of 20% is significantly better than random guessing, which would provide an accuracy of just 2%. In Step 2 of this notebook, you will have the opportunity to greatly improve accuracy by using transfer learning to create a CNN.
-# 
-# Remember that practice is far ahead of theory in deep learning.  Experiment with many different architectures, and trust your intuition.  And, of course, have fun!
-
-# ### (IMPLEMENTATION) Specify Data Loaders for the Landmark Dataset
-# 
-# Use the code cell below to create three separate [data loaders](http://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader): one for training data, one for validation data, and one for test data. Randomly split the images located at `landmark_images/train` to create the train and validation data loaders, and use the images located at `landmark_images/test` to create the test data loader.
-# 
-# **Note**: Remember that the dataset can be found at `/data/landmark_images/` in the workspace.
-# 
-# All three of your data loaders should be accessible via a dictionary named `loaders_scratch`. Your train data loader should be at `loaders_scratch['train']`, your validation data loader should be at `loaders_scratch['valid']`, and your test data loader should be at `loaders_scratch['test']`.
-# 
-# You may find [this documentation on custom datasets](https://pytorch.org/docs/stable/torchvision/datasets.html#datasetfolder) to be a useful resource.  If you are interested in augmenting your training and/or validation data, check out the wide variety of [transforms](http://pytorch.org/docs/stable/torchvision/transforms.html?highlight=transform)!
 
 # In[1]:
-
-
 ### TODO: Write data loaders for training, validation, and test sets
 ## Specify appropriate transforms, and batch_sizes
 import os
@@ -138,24 +56,8 @@ classes = [classes_name.split(".")[1] for classes_name in train_data.classes]
 #print(classes[49])     
 
 
-# **Question 1:** Describe your chosen procedure for preprocessing the data. 
-# - How does your code resize the images (by cropping, stretching, etc)?  What size did you pick for the input tensor, and why?
-# - Did you decide to augment the dataset?  If so, how (through translations, flips, rotations, etc)?  If not, why not?
-
-# **Answer**: 
-# I randomly resized crop the images to 256x256 pixels for training and testing. My research led me to choose 256 pixels since it appears to be a fairly typical and suitable size for an image
-# Then, the image is transformed to a tensor and normalized.
-# 
-# Did you decide to augment the dataset? No, because I got the needed accuracy without augmentaion. Also, It takes extra time.  
-
-# ### (IMPLEMENTATION) Visualize a Batch of Training Data
-# 
-# Use the code cell below to retrieve a batch of images from your train data loader, display at least 5 images simultaneously, and label each displayed image with its class name (e.g., "Golden Gate Bridge").
-# 
-# Visualizing the output of your data loader is a great way to ensure that your data loading and preprocessing are working as expected.
 
 # In[2]:
-
 
 import matplotlib.pyplot as plt
 get_ipython().run_line_magic('matplotlib', 'inline')
